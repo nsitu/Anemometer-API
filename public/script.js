@@ -17,6 +17,6 @@ async function fetchWind() {
     }
 }
 
-// fetch immediately & every 5 seconds
+// fetch immediately & twice every second
 fetchWind();
-setInterval(fetchWind, 5000);
+setInterval(fetchWind, 500);
