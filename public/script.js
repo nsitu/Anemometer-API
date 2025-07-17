@@ -1,9 +1,22 @@
-// fetch the datetime from API endpoint on NodeJS and populate the content div
-const getData = async () =>{
-    console.log('Hello from script.js')
-    const response = await fetch('/api/datetime')
-    const data = await response.json()
-    document.querySelector('#content').innerHTML = data.datetime
+
+async function fetchWind() {
+    try {
+        const res = await fetch('/api/current');
+        if (!res.ok) throw new Error('No data yet');
+        const data = await res.json();
+
+        document.getElementById('wind-speed').textContent =
+            `${data.windspeed.toFixed(2)} m/s`;
+
+        const time = new Date(data.time);
+        document.getElementById('timestamp').textContent =
+            `Last updated: ${time.toLocaleTimeString()}`;
+    } catch (err) {
+        document.getElementById('wind-speed').textContent = '--';
+        document.getElementById('timestamp').textContent = 'No data available';
+    }
 }
 
-getData()
+// fetch immediately & every 5 seconds
+fetchWind();
+setInterval(fetchWind, 5000);
